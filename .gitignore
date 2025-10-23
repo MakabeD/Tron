@@ -1,0 +1,57 @@
+# === UNITY ===
+
+# Carpetas generadas automáticamente
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+MemoryCaptures/
+Recordings/
+
+# Compilación de Visual Studio / Rider
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+.vs/
+
+# Archivos del paquete de cache
+# (Recomendado ignorarlos para no subir basura local)
+[Bb]uilds/
+[Pp]ackages/manifest-temp.json
+[Pp]ackages/packages-lock.json
+
+# Archivos de Unity Cloud y Analytics
+UnityPackageManager/
+ProjectSettings/EditorBuildSettings.asset
+ProjectSettings/GraphicsSettings.asset
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos de configuración personal
+*.swp
+*.lock
+*.log
+
+# === Si usas Git LFS (para assets grandes) ===
+#*.psd filter=lfs diff=lfs merge=lfs -text
+#*.png filter=lfs diff=lfs merge=lfs -text
+#*.fbx filter=lfs diff=lfs merge=lfs -text
+#*.wav filter=lfs diff=lfs merge=lfs -text

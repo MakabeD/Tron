@@ -3,15 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - interactable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - floor
   - Water
   - UI
-  - 
+  - rayCastD
   - 
   - 
   - 

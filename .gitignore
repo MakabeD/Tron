@@ -39,7 +39,8 @@ Recordings/
 UnityPackageManager/
 ProjectSettings/EditorBuildSettings.asset
 ProjectSettings/GraphicsSettings.asset
-Tron/Assets/Awesome_Lamp_Collection
+Awesome_Lamp_Collection/
+/Tron/Assets/Awesome_Lamp_Collection/
 
 # Archivos de sistema
 .DS_Store

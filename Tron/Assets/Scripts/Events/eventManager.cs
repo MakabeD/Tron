@@ -7,6 +7,7 @@ public class eventManager : MonoBehaviour
     public static eventManager Instance;
 
     public int eventCount;
+    public int eventEmergiCount;
     private void Awake()
     {
         if (Instance == null)
@@ -24,6 +25,7 @@ public class eventManager : MonoBehaviour
     {
         eventSpawner.Instance.setEvets(new Event[] { new testEvent1(1) });
         eventCount = 0;
+        eventEmergiCount = 0;
     }
     public Event GetEvent(int x)
     {
@@ -33,7 +35,13 @@ public class eventManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (eventCount > 0) { SuspiciousActivity.Instance.activateAdvertisement(); Debug.Log("ActivandoAviso"); return; }
-        SuspiciousActivity.Instance.deactivateAdvertisement();
+        if(eventCount == 0) SuspiciousActivity.Instance.deactivateAdvertisement(); 
+        else SuspiciousActivity.Instance.activateAdvertisement(); 
+
+        if (eventEmergiCount == 0) emergencyHUD.Instance.deactivateAdvertisement(); 
+        else emergencyHUD.Instance.activateAdvertisement();
+
+
+
     }
 }

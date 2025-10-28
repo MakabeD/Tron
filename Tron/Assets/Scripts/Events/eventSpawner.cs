@@ -60,7 +60,7 @@ public class eventSpawner : MonoBehaviour
                 events[i].ExcecuteEvent();
                 events[i].getDownProbability(events[i].getProbability()/2f);
                 events[i].isSpawned = true;
-                refill(events[i].getProbability() / 2f, i);
+                refill(events[i].getProbability() / events.Length, i);
                 //spawnea y reduce la probabilidada; aumenta las otras
                 return;
             }
@@ -81,6 +81,7 @@ public abstract class Event
     
     public float probability = 0f;
     public bool isSpawned = false;
+    public bool eventEmergency = false;
 
 
     

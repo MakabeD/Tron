@@ -33,7 +33,19 @@ public class interactionBase : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     //hit.collider.transform.GetComponent<script>().funcion();
-                    hit.collider.transform.GetComponent<testCubeInteraction>().interact();
+                    hit.collider.transform.GetComponent<testCubeInteraction>().Interact();
+
+                }
+            }
+            //implementacion de prueba(NOTA=========>>>>>>>>>>>>> MEJORAR)
+
+
+            if (hit.collider.tag == "paneltest")
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    //hit.collider.transform.GetComponent<script>().funcion();
+                    hit.collider.transform.GetComponent<testTerminarInteraction>().Interact();
 
                 }
             }

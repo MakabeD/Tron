@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; height: 37px;" />
+    <ui:VisualElement style="flex-grow: 1;" />
+    <ui:IntegerField value="1" readonly="true" is-delayed="false" style="align-self: flex-start; height: 328px; width: 949px; opacity: 1; background-color: rgba(82, 30, 74, 0); left: 172px; position: absolute; top: 60px; display: flex; visibility: visible; overflow: hidden; font-size: 49px; -unity-font-style: normal; white-space: nowrap; text-overflow: clip; -unity-text-outline-width: 0; -unity-background-image-tint-color: rgb(159, 39, 39); color: rgb(0, 0, 0); -unity-text-align: upper-center; border-left-color: rgba(255, 0, 0, 0); border-right-color: rgba(255, 0, 0, 0); border-top-color: rgba(255, 0, 0, 0); border-bottom-color: rgba(255, 0, 0, 0);" />
+    <ui:Label tabindex="-1" text="xd" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 185px; -unity-background-image-tint-color: rgb(178, 47, 47); background-color: rgba(240, 133, 133, 0);" />
+</ui:UXML>

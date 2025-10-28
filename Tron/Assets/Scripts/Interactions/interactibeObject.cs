@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class interactibeObject : MonoBehaviour
 {
-    public virtual void interact() { }
+    
+    public virtual void Interact() { }
 
 
     // Start is called before the first frame update

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class payerMovement : MonoBehaviour
+public class playerMovement : MonoBehaviour
 {
     public CharacterController controller;
     public float velocity=15f;
@@ -12,6 +12,9 @@ public class payerMovement : MonoBehaviour
     public LayerMask groundMask;
     bool isGrounded;
     Vector3 gVelocity;
+    //nueva variable para lockear el movimiento
+    public bool canMove=true;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +30,10 @@ public class payerMovement : MonoBehaviour
         {
             gVelocity.y = -2;
         }
+
+        //integrando efectos de la simulacion
+        if (!canMove) return;
+
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 

@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class testCubeInteraction : interactibeObject
 {
-    public override void interact()
+    private int id=0;
+    public override void Interact()
     {
-        Destroy(gameObject);
+        //GameHP.Instance.GetDownLife(10);
+        if(eventManager.Instance.GetEvent(id).isSpawned)
+        {
+            eventManager.Instance.GetEvent(id).stopEventExcecute();
+        }
+        //Destroy(gameObject);
     }
 }

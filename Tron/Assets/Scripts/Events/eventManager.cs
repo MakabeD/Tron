@@ -8,7 +8,7 @@ public class eventManager : MonoBehaviour
 
     public int eventCount;
     public int eventEmergiCount;
-    private void Awake()
+    private void Awake() 
     {
         if (Instance == null)
         {

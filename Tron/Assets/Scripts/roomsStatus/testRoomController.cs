@@ -8,8 +8,8 @@ public class testRoomController : MonoBehaviour
     float timer=0;
     bool emergency;
     bool isSpawned;
-
     public Renderer renderLampColor;
+
     // Start is called before the first frame update
     void Start()
     {

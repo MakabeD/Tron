@@ -2,7 +2,33 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public abstract class Event
+{
 
+    public float probability = 0f;
+    public bool isSpawned = false;
+    public bool eventEmergency = false;
+
+
+
+
+    public abstract void ExcecuteEvent();
+    public abstract void stopEventExcecute();
+
+    public float getProbability() { return probability; }
+
+    public void getDownProbability(float x)
+    {
+        probability -= x;
+    }
+
+    public void getUpProbability(float x)
+    {
+        probability += x;
+    }
+
+
+}
 public class testEvent1 : Event
 {
     

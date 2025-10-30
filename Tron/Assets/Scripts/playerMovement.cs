@@ -32,7 +32,7 @@ public class playerMovement : MonoBehaviour
         }
 
         //integrando efectos de la simulacion
-        if (!canMove) return;
+        if (!canMove || GameManager.Instance.isInGame) return;
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");

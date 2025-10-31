@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class MinigameManager : MonoBehaviour
 {
     public static MinigameManager Instance;
@@ -38,11 +39,11 @@ public class MinigameManager : MonoBehaviour
     }
 
     // Cerrar y limpiar
-    public void EndMinigame(int id)
+    public void EndMinigame()
     {
         if (!GameManager.Instance.isInGame) return;
 
-        eventManager.Instance.GetEvent(id).stopEventExcecute();
+        
 
         currentMinigame?.EndMinigame();
 

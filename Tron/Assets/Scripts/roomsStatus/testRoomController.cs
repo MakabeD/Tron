@@ -5,11 +5,23 @@ using UnityEngine;
 public class testRoomController : MonoBehaviour
 {
     int id = 0;
-    float timer=0;
+    public float timer=0;
     bool emergency;
     bool isSpawned;
     public Renderer renderLampColor;
-
+    public static testRoomController Instance;
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +41,7 @@ public class testRoomController : MonoBehaviour
         }
         else timer = 0; 
 
-        if (timer >= 10 && isSpawned)
+        if (timer >= 50 && isSpawned)
         {
             eventManager.Instance.GetEvent(id).eventEmergency = true;
             eventManager.Instance.eventEmergiCount++;
@@ -40,5 +52,10 @@ public class testRoomController : MonoBehaviour
             renderLampColor.material.color = Color.red; // crea/usa una instancia sólo para ese renderer
         }
         else renderLampColor.material.color = Color.white;
+    }
+    public  float getEmergencyTimer()
+    {
+        if(!emergency)return timer;
+        return 50;
     }
 }

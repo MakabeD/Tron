@@ -10,7 +10,7 @@ public class testCubeInteraction : interactibeObject
     public override void Interact()
     {
         //GameHP.Instance.GetDownLife(10);
-        if(eventManager.Instance.GetEvent(id).isSpawned && !GameManager.Instance.isInGame&& !GameManager.Instance.isinCombat)
+        if(EventManager.Instance.GetEvent(id).IsSpawned && !GameManager.Instance.isInGame&& !GameManager.Instance.isinCombat)
         {
             MinigameManager.Instance.StartMinigame(minigamePrefab);
             

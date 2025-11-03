@@ -1,14 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class eventManager : MonoBehaviour
+public class EventManager : MonoBehaviour
 {
-    public static eventManager Instance;
+    public static EventManager Instance { get; private set; }
 
-    public int eventCount;
-    public int eventEmergiCount;
-    private void Awake() 
+    // Contadores encapsulados
+    public int EventCount { get; private set; }
+    public int EmergencyEventCount { get; private set; }
+
+    // Eventos públicos que notifican cambios (invocados cuando cambia el contador)
+    public event Action<int> OnEventCountChanged;
+    public event Action<int> OnEmergencyEventCountChanged;
+
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -20,28 +27,51 @@ public class eventManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    // Start is called before the first frame update
+
     void Start()
     {
-        eventSpawner.Instance.setEvets(new Event[] { new testEvent1(1) });
-        eventCount = 0;
-        eventEmergiCount = 0;
+        //factory
+        var factory = new EventFactory();
+        // Registrado dentro de EventFactory constructor; aquí se muestra uso:
+        Event[] initial = new Event[] { factory.Create("TestEvent1", 1f) };
+        EventSpawner.Instance.SetEvents(initial);
+
+        EventCount = 0;
+        EmergencyEventCount = 0;
     }
+
     public Event GetEvent(int x)
     {
-        return eventSpawner.Instance.getEvets()[x];
+        return EventSpawner.Instance.GetEvents()[x];
     }
 
-    // Update is called once per frame
+    // Métodos que modifican contadores y notifican (aquí invocamos los eventos)
+    public void IncrementEventCount()
+    {
+        EventCount++;
+        OnEventCountChanged?.Invoke(EventCount);
+    }
+
+    public void DecrementEventCount()
+    {
+        EventCount = Mathf.Max(0, EventCount - 1);
+        OnEventCountChanged?.Invoke(EventCount);
+    }
+
+    public void IncrementEmergencyEventCount()
+    {
+        EmergencyEventCount++;
+        OnEmergencyEventCountChanged?.Invoke(EmergencyEventCount);
+    }
+
+    public void DecrementEmergencyEventCount()
+    {
+        EmergencyEventCount = Mathf.Max(0, EmergencyEventCount - 1);
+        OnEmergencyEventCountChanged?.Invoke(EmergencyEventCount);
+    }
+
     void Update()
     {
-        if(eventCount == 0) SuspiciousActivity.Instance.deactivateAdvertisement(); 
-        else SuspiciousActivity.Instance.activateAdvertisement(); 
-
-        if (eventEmergiCount == 0) emergencyHUD.Instance.deactivateAdvertisement(); 
-        else emergencyHUD.Instance.activateAdvertisement();
-
-
-
+        
     }
 }

@@ -35,7 +35,7 @@ public class databaseMinigame : MonoBehaviour, IMinigame
     public void OnWin()
     {
         
-        eventManager.Instance.GetEvent(id).stopEventExcecute();
+        EventManager.Instance.GetEvent(id).StopEventExecution();
         MinigameManager.Instance.EndMinigame();
         Debug.Log("Ganaste");
     }

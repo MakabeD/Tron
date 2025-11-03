@@ -32,7 +32,12 @@ public class emergencyHUD : MonoBehaviour
             isactivated = false;
         }
     }
-
+    public void EmergencyEventCheck(int EmergencyEventCount)
+    {
+        Debug.Log("Checkeando emergency event count");
+        if (EmergencyEventCount == 0) deactivateAdvertisement();
+        else activateAdvertisement();
+    }
 
     void startBlinking()
     {
@@ -72,7 +77,7 @@ public class emergencyHUD : MonoBehaviour
     void Start()
     {
         panel.SetActive(false);
-
+        EventManager.Instance.OnEmergencyEventCountChanged += EmergencyEventCheck;
     }
 
     // Update is called once per frame

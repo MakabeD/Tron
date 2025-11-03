@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using TMPro;
 using UnityEngine;
 
@@ -31,6 +32,12 @@ public class SuspiciousActivity : MonoBehaviour
             panel.SetActive(false);
             isactivated= false;
         }
+    }
+    public void EventCountCheck(int EventCount)
+    {
+        Debug.Log("Checkeando event count");
+        if (EventCount == 0) deactivateAdvertisement();
+        else activateAdvertisement();
     }
 
 
@@ -72,7 +79,7 @@ public class SuspiciousActivity : MonoBehaviour
     void Start()
     {
         panel.SetActive(false);
-        
+        EventManager.Instance.OnEventCountChanged += EventCountCheck;
     }
 
     // Update is called once per frame

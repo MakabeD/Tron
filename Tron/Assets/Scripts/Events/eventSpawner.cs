@@ -1,19 +1,17 @@
+// EventSpawner.cs
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class eventSpawner : MonoBehaviour
+public class EventSpawner : MonoBehaviour
 {
-    public static eventSpawner Instance;
-    public bool spawnActivate=false;
-    public Event[] events = new Event[6];
-    float counter = 0f;
+    public static EventSpawner Instance { get; private set; }
 
+    [SerializeField] private bool spawnActivate = true;
+    [SerializeField] private Event[] events = new Event[0];
 
-    public void setEvets(Event[] evetss) { events = evetss; }
-    public Event[] getEvets() { return events; }
+    [SerializeField] private float spawnInterval = 15f; // configurable desde inspector
 
     private void Awake()
     {
@@ -28,49 +26,101 @@ public class eventSpawner : MonoBehaviour
         }
     }
 
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-
+        //  usar factory: crear y pasar eventos aquí
+        // eventFactory.Register(...) / eventFactory.Create(...)
+        StartCoroutine(SpawnLoop());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator SpawnLoop()
     {
-        if (!spawnActivate) return;
-        
-        counter += Time.deltaTime;
-        if (counter >= 15f)
+        while (true)
         {
-            roulette();
-            counter = 0f;
+            if (spawnActivate)
+            {
+                TrySpawn();
+            }
+            yield return new WaitForSeconds(spawnInterval);
         }
     }
 
-    void roulette()
+    // Exposición controlada (lectura)
+    public IReadOnlyList<Event> GetEvents() => events;  
+
+    // Setter público 
+    public void SetEvents(Event[] newEvents)
     {
+        events = newEvents ?? new Event[0];
+    }
+
+    private void TrySpawn()
+    {
+        if (events == null || events.Length == 0) return;
+
+        // Calcular suma de probabilidades solo de los que no están spawn y no nulos
+        float total = 0f;
         for (int i = 0; i < events.Length; i++)
         {
-            Debug.Log("buscando...");
-            if (UnityEngine.Random.value < events[i].getProbability() && !events[i].isSpawned) //agregar .chance
+            var e = events[i];
+            if (e == null) continue;
+            // solo considerar eventos no spawn
+            if (!e.IsSpawned)
             {
-                Debug.Log("encontrado"+ events[i].getProbability());
-                events[i].ExcecuteEvent();
-                events[i].getDownProbability(events[i].getProbability()/2f);
-                events[i].isSpawned = true;
-                refill(events[i].getProbability() / events.Length, i);
-                //spawnea y reduce la probabilidada; aumenta las otras
+                total += Mathf.Max(0f, e.GetProbability());
+            }
+        }
+
+        if (total <= 0f)
+        {
+            // nada para spawnear
+            return;
+        }
+
+        // elegir un valor aleatorio entre 0 y total
+        float r = UnityEngine.Random.value * total;
+        float cumulative = 0f;
+
+        for (int i = 0; i < events.Length; i++)
+        {
+            var e = events[i];
+            if (e == null || e.IsSpawned) continue;
+
+            float prob = Mathf.Max(0f, e.GetProbability());
+            cumulative += prob;
+            if (r <= cumulative)
+            {
+                // Se escogió el evento e
+                Debug.Log($"Spawning event (prob {prob}) index {i}");
+                e.ExecuteEvent();
+
+                
+
+                // Ajustar probabilidades: disminuir la elegida y aumentar las demás
+                float decrease = prob / 2f;
+                e.DecreaseProbability(decrease);
+
+                
+                float refillAmount = prob / Mathf.Max(1, events.Length);
+                RefillProbabilities(refillAmount, i);
+
                 return;
             }
         }
     }
-    void refill(float i, int index)
+
+    private void RefillProbabilities(float amountPerOther, int indexOfChosen)
     {
-        for (int j=0;j<events.Length; j++)
+        for (int j = 0; j < events.Length; j++)
         {
-            if (index != j) events[j].getUpProbability(i);
+            if (j == indexOfChosen) continue;
+            var e = events[j];
+            if (e == null) continue;
+            e.IncreaseProbability(amountPerOther);
         }
     }
+
+    // métodos públicos para activar/desactivar spawn
+    public void SetSpawnActive(bool active) => spawnActivate = active;
+    public bool IsSpawnActive() => spawnActivate;
 }

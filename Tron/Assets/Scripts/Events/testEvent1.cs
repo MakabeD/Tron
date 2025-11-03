@@ -2,57 +2,39 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public abstract class Event
+
+
+
+public class TestEvent1 : Event
 {
-
-    public float probability = 0f;
-    public bool isSpawned = false;
-    public bool eventEmergency = false;
-
-
-
-
-    public abstract void ExcecuteEvent();
-    public abstract void stopEventExcecute();
-
-    public float getProbability() { return probability; }
-
-    public void getDownProbability(float x)
+    public TestEvent1(float probability)
     {
-        probability -= x;
+        this.Probability = probability;
     }
 
-    public void getUpProbability(float x)
+    public override void ExecuteEvent()
     {
-        probability += x;
+        if (EventEmergency)
+        {
+            
+            EventManager.Instance.IncrementEmergencyEventCount();
+        }
+        EventManager.Instance.IncrementEventCount();
+        Debug.Log("Evento activado");
+        IsSpawned = true;
     }
 
-
+    public override void StopEventExecution()
+    {
+        if (EventEmergency)
+        {
+            EventManager.Instance.DecrementEmergencyEventCount();
+        }
+        EventManager.Instance.DecrementEventCount();
+       
+        IsSpawned = false;
+        EventEmergency = false;
+        Debug.Log("Evento desactivado");
+    }
 }
-public class testEvent1 : Event
-{
-    
-    
 
-    //public event Action yellowRedAletrsTestEvent1;
-    public override void ExcecuteEvent()
-    {
-        if (eventEmergency) eventManager.Instance.eventEmergiCount++;
-        eventManager.Instance.eventCount++;
-        Debug.Log("evento activado");
-    }
-    public override void stopEventExcecute()
-    {
-        if(eventEmergency) eventManager.Instance.eventEmergiCount--;
-        eventManager.Instance.eventCount--;
-        isSpawned = false;
-        eventEmergency = false;
-        Debug.Log("evento desactivado");
-    }
-    public testEvent1( float probability)
-    {
-        
-        this.probability = probability;
-    }
-    
-}

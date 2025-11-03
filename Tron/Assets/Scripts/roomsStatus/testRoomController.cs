@@ -32,8 +32,8 @@ public class testRoomController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isSpawned = eventManager.Instance.GetEvent(id).isSpawned;
-        emergency = eventManager.Instance.GetEvent(id).eventEmergency;
+        isSpawned = EventManager.Instance.GetEvent(id).IsSpawned;
+        emergency = EventManager.Instance.GetEvent(id).EventEmergency;
 
         if (isSpawned&&!emergency)
         {
@@ -43,8 +43,8 @@ public class testRoomController : MonoBehaviour
 
         if (timer >= 50 && isSpawned)
         {
-            eventManager.Instance.GetEvent(id).eventEmergency = true;
-            eventManager.Instance.eventEmergiCount++;
+            EventManager.Instance.GetEvent(id).EventEmergency = true;
+            EventManager.Instance.IncrementEmergencyEventCount();
             Debug.Log("Emergencia");
         }
         if (renderLampColor != null && emergency)

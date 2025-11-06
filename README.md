@@ -4,6 +4,7 @@
 
 `TRON` Tron es un videojuego que acerca al jugador interactivamente al campo de la ciberseguridad. Es de tipo semi open-world y ambientado en una oficina de seguridad informática. El jugador encarna a Tron, un defensor de software que se encarga de atender y solucionar las anomalías y amenazas que puedan ocurrirle al sistema, sin importar sus métodos.
 
+**(ve el final para aprender a jugar)**
 ### El problema que soluciona
 
 La ciberseguridad es una de las ramas más complejas de la programación; esto no es un secreto para nadie. Con los minijuegos, se le da la oportunidad al jugador de enseñarle verdaderos casos de riesgo en un sistema por medio de interacciones con anomalías que las salas de la oficina puedan representar. Esto puede ayudarle al jugador interiorizar y afianzar los conceptos y casos que se pueden presentar en este juego.
@@ -83,7 +84,7 @@ Para acceer al script
 
 ---
 
-# 🧠 Guía de Juego: Protección del Sistema Informático
+# 🧠 Guía de Juego: Tron
 
 ## 🎯 Objetivo principal
 Tu misión es **proteger el sistema informático** durante **6 horas del juego** (equivalente a unos **3 minutos en tiempo real**) evitando y resolviendo actividades sospechosas que amenazan la seguridad del sistema.

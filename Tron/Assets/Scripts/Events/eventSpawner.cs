@@ -11,7 +11,7 @@ public class EventSpawner : MonoBehaviour
     [SerializeField] private bool spawnActivate = true;
     [SerializeField] private Event[] events = new Event[0];
 
-    [SerializeField] private float spawnInterval = 15f; // configurable desde inspector
+    [SerializeField] private float spawnInterval = 30f; // configurable desde inspector
 
     private void Awake()
     {
@@ -28,11 +28,10 @@ public class EventSpawner : MonoBehaviour
 
     private void Start()
     {
-        //  usar factory: crear y pasar eventos aquí
-        // eventFactory.Register(...) / eventFactory.Create(...)
+        
         StartCoroutine(SpawnLoop());
     }
-
+    
     private IEnumerator SpawnLoop()
     {
         while (true)
@@ -123,4 +122,5 @@ public class EventSpawner : MonoBehaviour
     // métodos públicos para activar/desactivar spawn
     public void SetSpawnActive(bool active) => spawnActivate = active;
     public bool IsSpawnActive() => spawnActivate;
+
 }

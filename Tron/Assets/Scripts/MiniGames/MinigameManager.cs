@@ -53,7 +53,6 @@ public class MinigameManager : MonoBehaviour
 
         GameManager.Instance.isInGame = false;
 
-        // restore cursor lock if lo necesitas
         
         Cursor.lockState = CursorLockMode.Locked;
 

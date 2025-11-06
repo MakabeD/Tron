@@ -121,12 +121,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &813485443266019003
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,6 +327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texto: 
   isMalicious: 0
+  feedback: 
 --- !u!1 &1610188172279800091
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,12 +449,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &2469960718746844759
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,12 +571,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &2527686509827176118
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,6 +1003,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texto: 
   isMalicious: 0
+  feedback: 
 --- !u!1 &3237600145992518156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,12 +1201,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &3383716647822259969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,7 +1270,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ">Tu objetivo aqui es identificar entradas que no coincidan con la operacion
     normal \n>Y neutralizarlas antes de que el sistema ejecute un protocolo de contencion
-    automatizado\n>\n"
+    automatizado\n>selecciona el log(linea de texto) que creas contenga un log sospechoso/malisioso/con
+    informacion modificada\n>>|"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d86e933e6ca983a45ad912f7d7fa9882, type: 2}
   m_sharedMaterial: {fileID: -5660775149628104760, guid: d86e933e6ca983a45ad912f7d7fa9882, type: 2}
@@ -1369,10 +1352,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09a176715d867e0469a1a2fc909494c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typingSpeed: 0.05
+  typingSpeed: 0.025
   blinkSpeed: 0.5
   brightRed: {r: 0.90943396, g: 0, b: 0, a: 1}
   darkRed: {r: 0.4, g: 0, b: 0, a: 1}
+  isTyping: 1
 --- !u!1 &3606330618084455971
 GameObject:
   m_ObjectHideFlags: 0
@@ -1531,12 +1515,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &4385245633330528199
 GameObject:
   m_ObjectHideFlags: 0
@@ -1611,10 +1590,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1788,6 +1767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texto: 
   isMalicious: 0
+  feedback: 
 --- !u!1 &4759004911377124493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1937,6 +1917,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texto: 
   isMalicious: 0
+  feedback: 
 --- !u!1 &5131661968610211623
 GameObject:
   m_ObjectHideFlags: 0
@@ -2058,12 +2039,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &5244978733868590986
 GameObject:
   m_ObjectHideFlags: 0
@@ -2369,6 +2345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texto: 
   isMalicious: 0
+  feedback: 
 --- !u!1 &5799424847955198511
 GameObject:
   m_ObjectHideFlags: 0
@@ -2434,7 +2411,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Logs
+  m_text: <mspace=0.5em> Logs
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d86e933e6ca983a45ad912f7d7fa9882, type: 2}
   m_sharedMaterial: {fileID: -5660775149628104760, guid: d86e933e6ca983a45ad912f7d7fa9882, type: 2}
@@ -2624,12 +2601,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &7162395501367197694
 GameObject:
   m_ObjectHideFlags: 0
@@ -2779,6 +2751,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texto: 
   isMalicious: 0
+  feedback: 
 --- !u!1 &7267559616632746685
 GameObject:
   m_ObjectHideFlags: 0
@@ -2928,6 +2901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texto: 
   isMalicious: 0
+  feedback: 
 --- !u!1 &7528799415704236081
 GameObject:
   m_ObjectHideFlags: 0
@@ -3049,12 +3023,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &7834582887468776250
 GameObject:
   m_ObjectHideFlags: 0
@@ -3176,12 +3145,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &8099433018635645158
 GameObject:
   m_ObjectHideFlags: 0
@@ -3303,12 +3267,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &8749223005452255925
 GameObject:
   m_ObjectHideFlags: 0
@@ -3592,6 +3551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texto: 
   isMalicious: 0
+  feedback: 
 --- !u!1 &8846605128652911721
 GameObject:
   m_ObjectHideFlags: 0
@@ -3713,12 +3673,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  onMalicious:
-    m_PersistentCalls:
-      m_Calls: []
-  onBenign:
-    m_PersistentCalls:
-      m_Calls: []
+  isHeld: 0
 --- !u!1 &8888061825155009496
 GameObject:
   m_ObjectHideFlags: 0
@@ -3913,6 +3868,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texto: 
   isMalicious: 0
+  feedback: 
 --- !u!1 &9116103193012400195
 GameObject:
   m_ObjectHideFlags: 0
@@ -4062,3 +4018,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texto: 
   isMalicious: 0
+  feedback: 

@@ -5,7 +5,7 @@ using System.Collections;
 public class TypewriterAndBlink : MonoBehaviour
 {
     [Header("Configuración de escritura")]
-    public float typingSpeed = 0.05f; // tiempo entre letras
+    public float typingSpeed = 0.01f; // tiempo entre letras
 
     [Header("Configuración de titileo")]
     public float blinkSpeed = 0.5f;   // velocidad de cambio de color

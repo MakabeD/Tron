@@ -49,6 +49,15 @@ public class interactionBase : MonoBehaviour
 
                 }
             }
+            if (hit.collider.tag == "combat")
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    //hit.collider.transform.GetComponent<script>().funcion();
+                    hit.collider.transform.GetComponent<temporalCombatInteraction>().Interact();
+
+                }
+            }
         }
         else
         {

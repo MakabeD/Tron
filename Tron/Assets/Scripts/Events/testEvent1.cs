@@ -26,12 +26,14 @@ public class TestEvent1 : Event
 
     public override void StopEventExecution()
     {
+        if (EventEmergency)  GameManager.Instance.isinCombat--;
+
         if (EventEmergency)
         {
             EventManager.Instance.DecrementEmergencyEventCount();
         }
         EventManager.Instance.DecrementEventCount();
-       
+
         IsSpawned = false;
         EventEmergency = false;
         Debug.Log("Evento desactivado");

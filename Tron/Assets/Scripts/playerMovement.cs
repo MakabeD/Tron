@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
+    public static playerMovement Instance;
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     public CharacterController controller;
     public float velocity=15f;
     public float gravity = -9.81f;

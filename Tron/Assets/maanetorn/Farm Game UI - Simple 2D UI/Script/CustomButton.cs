@@ -23,7 +23,7 @@ namespace FGUIStarter
 
         [Header("Events")]
         public static Action onMalicious; // conectar desde inspector
-        public static Action onBenign;    // conectar desde inspector
+        public static Action<LogData> onBenign;    // conectar desde inspector
 
         protected override void Awake()
         {
@@ -113,6 +113,7 @@ namespace FGUIStarter
                 HandleBenign(log);
             }
         }
+        
 
         /// <summary>
         /// Acción por defecto al detectar log malicioso.
@@ -137,7 +138,7 @@ namespace FGUIStarter
         private void HandleBenign(LogData log)
         {
             Debug.Log($"[CustomButton] Log benigno: {log.texto}");
-            onBenign?.Invoke();
+            onBenign?.Invoke(log);
 
             // Ejemplo adicional: restaurar color (o setear a verde)
             var tmp = GetComponentInChildren<TextMeshProUGUI>();

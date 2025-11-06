@@ -27,13 +27,21 @@ public class EventManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public void Reset()
+    {
+        EventCount = 0;
+        EmergencyEventCount = 0;
+        emergencyHUD.Instance.deactivateAdvertisement();
+        SuspiciousActivity.Instance.deactivateAdvertisement();
+
+    }
 
     void Start()
     {
         //factory
         var factory = new EventFactory();
         // Registrado dentro de EventFactory constructor; aquí se muestra uso:
-        Event[] initial = new Event[] { factory.Create("TestEvent1", 1f) };
+        Event[] initial = new Event[] { factory.Create("TestEvent1", 0.35f), factory.Create("TestEvent2", 0.35f)};
         EventSpawner.Instance.SetEvents(initial);
 
         EventCount = 0;
@@ -51,7 +59,11 @@ public class EventManager : MonoBehaviour
         EventCount++;
         OnEventCountChanged?.Invoke(EventCount);
     }
-
+    public void StopSpwaner()
+    {
+        EventSpawner.Instance.SetSpawnActive(false);
+    }
+    
     public void DecrementEventCount()
     {
         EventCount = Mathf.Max(0, EventCount - 1);

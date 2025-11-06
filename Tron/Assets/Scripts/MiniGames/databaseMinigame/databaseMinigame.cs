@@ -25,11 +25,18 @@ public class databaseMinigame : MonoBehaviour, IMinigame
 
     public void OnLose()
     {
-        havelose = true;
-        GameHP.Instance.GetDownLife(Malicious_count);
-        MinigameManager.Instance.EndMinigame();
-        GameManager.Instance.isinCombat = true;
-        Debug.Log("En Combate");
+
+        if (!EventManager.Instance.GetEvent(id).EventEmergency)
+        {
+            GameManager.Instance.isinCombat++;
+            EventManager.Instance.GetEvent(id).EventEmergency = true;
+            EventManager.Instance.IncrementEmergencyEventCount();
+            Debug.Log("emergencia por perder");
+        }
+            havelose = true;
+            GameHP.Instance.GetDownLife(Malicious_count);
+            MinigameManager.Instance.EndMinigame();
+       
     }
 
     public void OnWin()
@@ -58,7 +65,7 @@ public class databaseMinigame : MonoBehaviour, IMinigame
             return;
         }
 
-        if(testRoomController.Instance.getEmergencyTimer()==50)
+        if(TestRoomController.Instance.getEmergencyTimer()>=50)
         {
             OnLose();
             return;
@@ -70,9 +77,10 @@ public class databaseMinigame : MonoBehaviour, IMinigame
     {
         Malicious_count--;
     }
-    public void beningClicked()
+    public void beningClicked(LogData log)
     {
-        testRoomController.Instance.timer += 5;
+        FeedbackController.Instance.datas.Add(log); 
+        TestRoomController.Instance.timer += 5;
     }
     void AsignarTextosAleatorios(databaseLogStructure[] textos)
     {
@@ -107,6 +115,7 @@ public class databaseMinigame : MonoBehaviour, IMinigame
                 // Guarda los datos de ese texto
                 logData.texto = textosMezclados[i].text;
                 logData.isMalicious = textosMezclados[i].isMalicious;
+                logData.feedback = textosMezclados[i].feedback;
             }
             else
             {
@@ -133,79 +142,53 @@ public class databaseMinigame : MonoBehaviour, IMinigame
 
     void Initialize()
     {
+        // Textos 1 - Básicos (balance: 5 benignos, 5 maliciosos)
         textos1 = new databaseLogStructure[]
-           {
-            databaseLogFactory.Create("[2025-10-27 12:00:01] DB: Connection accepted from 192.168.1.10", false),
-            databaseLogFactory.Create("[2025-10-27 12:00:05] DB: Query OK - SELECT * FROM users", false),
-            databaseLogFactory.Create("[2025-10-27 12:00:12] DB: User 'guest' failed login (3 attempts)", true),
-            databaseLogFactory.Create("[2025-10-27 12:00:20] DB: Backup completed (size 12.3MB)", false),
-            databaseLogFactory.Create("[2025-10-27 12:00:25] DB: Warning - slow query detected (0.8s)", false),
-            databaseLogFactory.Create("[2025-10-27 12:00:31] DB: Connection closed by client 192.168.1.11", false),
-            databaseLogFactory.Create("[2025-10-27 12:00:45] DB: INFO: Routine index rebuild started", false),
-            databaseLogFactory.Create("[2025-10-27 12:00:50] DB: INFO: Routine index rebuild finished", false),
-            databaseLogFactory.Create("[2025-10-27 12:00:58] DB: User 'admin' login successful", false),
-            databaseLogFactory.Create("[2025-10-27 12:01:03] DB: Checksum OK for log segment #1", false)
-           };
+        {
+    databaseLogFactory.Create("[2025-10-27 12:00:01] DB: Connection accepted from 192.168.1.10", false, "Conexión interna esperada; IP interna en rango privado."),
+    databaseLogFactory.Create("[2025-10-27 12:00:05] DB: Query OK - SELECT * FROM users", false, "Consulta SELECT normal; sin parámetros dinámicos sospechosos."),
+    databaseLogFactory.Create("[2025-10-27 12:00:12] DB: User 'guest' failed login (3 attempts)", true, "Múltiples intentos fallidos en corto periodo — posible brute-force."),
+    databaseLogFactory.Create("[2025-10-27 12:00:20] DB: Backup completed (size 12.3MB)", false, "Backup regular completado; tamaño acorde a datos esperados."),
+    databaseLogFactory.Create("[2025-10-27 12:00:25] DB: Warning - slow query detected (0.8s)", false, "Query lenta pero dentro de umbrales; investigar rendimiento si persiste."),
+    databaseLogFactory.Create("[2025-10-27 12:00:31] DB: Connection closed by client 192.168.1.11", false, "Cierre de conexión por cliente interno; comportamiento normal."),
+    databaseLogFactory.Create("[2025-10-27 12:00:45] DB: Multiple failed auth attempts observed from 203.0.113.55", true, "IP pública con múltiples fallos; patrón de ataque remoto."),
+    databaseLogFactory.Create("[2025-10-27 12:00:50] DB: INFO: Routine index rebuild finished", false, "Tarea de mantenimiento completada sin errores."),
+    databaseLogFactory.Create("[2025-10-27 12:00:58] DB: Unexpected command: ALTER SYSTEM SET config='unsafe'", true, "Comando de configuración no autorizado — cambio de sistema potencialmente peligroso."),
+    databaseLogFactory.Create("[2025-10-27 12:01:03] DB: Checksum OK for log segment #1", false, "Checksum válido; integridad del segmento verificada.")
+        };
 
-        // Logs medios: algunos sospechosos o maliciosos leves
+        // Textos 2 - Medios (balance: 5 benignos, 5 maliciosos)
         textos2 = new databaseLogStructure[]
         {
-            databaseLogFactory.Create("[2025-10-27 12:05:01] DB: Query OK - UPDATE users SET active=1", false),
-            databaseLogFactory.Create("[2025-10-27 12:05:03] DB: ALERT: Unexpected schema change detected", true),
-            databaseLogFactory.Create("[2025-10-27 12:05:07] DB: Failed login from external IP 10.255.255.7", true),
-            databaseLogFactory.Create("[2025-10-27 12:05:10] DB: LOG_TRUNCATE: tail truncated (reason: policy)", false),
-            databaseLogFactory.Create("[2025-10-27 12:05:15] DB: Warning - duplicate transaction id 0x00FF", false),
-            databaseLogFactory.Create("[2025-10-27 12:05:18] DB: File write error: /var/db/data.db (errno 5)", true),
-            databaseLogFactory.Create("[2025-10-27 12:05:22] DB: Recovered 12 orphan pages after checkpoint", false),
-            databaseLogFactory.Create("[2025-10-27 12:05:30] DB: Suspicious: query 'DROP TABLE tmp' rolled back", true),
-            databaseLogFactory.Create("[2025-10-27 12:05:36] DB: IP 172.16.254.1 attempted auth w/ blank password", true),
-            databaseLogFactory.Create("[2025-10-27 12:05:42] DB: HASH_MISMATCH detected on segment #3", true)
+    databaseLogFactory.Create("[2025-10-27 12:05:01] DB: Query OK - UPDATE users SET active=1 WHERE id=42", false, "Actualización legítima de usuario identificada por id; patrón normal."),
+    databaseLogFactory.Create("[2025-10-27 12:05:03] DB: ALERT: Unexpected schema change detected (table: payments)", true, "Cambio de esquema no planificado en tabla sensible; posible alteración maliciosa."),
+    databaseLogFactory.Create("[2025-10-27 12:05:07] DB: Failed login from external IP 10.255.255.7", true, "IP externa con fallos de autenticación; potencial intento de acceso."),
+    databaseLogFactory.Create("[2025-10-27 12:05:10] DB: LOG_TRUNCATE: tail truncated (reason: policy)", false, "Truncamiento por política configurada; operación administrativa esperada."),
+    databaseLogFactory.Create("[2025-10-27 12:05:15] DB: Warning - duplicate transaction id 0x00FF", false, "Duplicado de transacción detectado; puede ser condición transitoria, requiere seguimiento."),
+    databaseLogFactory.Create("[2025-10-27 12:05:18] DB: File write error: /var/db/data.db (errno 5)", true, "Error de escritura en base de datos; posible corrupción o intento de sabotaje."),
+    databaseLogFactory.Create("[2025-10-27 12:05:22] DB: Recovered 12 orphan pages after checkpoint", false, "Recuperación de páginas huérfanas completada; operación de mantenimiento."),
+    databaseLogFactory.Create("[2025-10-27 12:05:30] DB: Suspicious: query 'DROP TABLE tmp' rolled back", true, "DROP TABLE ejecutado y revertido — operación destructiva detectada."),
+    databaseLogFactory.Create("[2025-10-27 12:05:36] DB: IP 172.16.254.1 attempted auth w/ blank password", true, "Intento de autenticación con contraseña vacía; riesgo alto de acceso no autorizado."),
+    databaseLogFactory.Create("[2025-10-27 12:05:42] DB: HASH_MISMATCH detected on segment #3", false, "Desajuste de hash detectado pero dentro de proceso de reparación automática; requiere auditoría.")
         };
 
-        // Logs avanzados: mezcla de comportamiento irregular y exploits claros
+        // Textos 3 - Avanzados (balance: 5 benignos, 5 maliciosos)
         textos3 = new databaseLogStructure[]
         {
-            databaseLogFactory.Create("[2025-10-27 12:10:01] DB: Notice - log entry duplicated (id: 9834) => see 9833", false),
-            databaseLogFactory.Create("[2025-10-27 12:09:59] DB: Time anomaly: event timestamp moved backward 00:00:12", true),
-            databaseLogFactory.Create("[2025-10-27 12:10:08] DB: Detected SQL injection pattern in query: \"' OR '1'='1\"", true),
-            databaseLogFactory.Create("[2025-10-27 12:10:14] DB: File /etc/db/keys.pem opened by unknown PID 4421", true),
-            databaseLogFactory.Create("[2025-10-27 12:10:21] DB: ALERT: Base64 payload in field 'notes' (length 1024)", true),
-            databaseLogFactory.Create("[2025-10-27 12:10:30] DB: Warning - replication lag: master ahead by 00:02:13", false),
-            databaseLogFactory.Create("[2025-10-27 12:10:38] DB: LOG_INCONSISTENCY: segment #7 overlaps with #6", false),
-            databaseLogFactory.Create("[2025-10-27 12:10:45] DB: User 'service' escalated privileges unexpectedly", true),
-            databaseLogFactory.Create("[2025-10-27 12:10:52] DB: NTP delta detected: clock jumped +300s", false),
-            databaseLogFactory.Create("[2025-10-27 12:11:00] DB: Checksum altered: expected 0xA3F2 got 0x0000", true)
+    databaseLogFactory.Create("[2025-10-27 12:10:01] DB: Notice - log entry duplicated (id: 9834) => see 9833", false, "Duplicado de entrada de logs; generalmente benigno pero revisar origen de duplicación."),
+    databaseLogFactory.Create("[2025-10-27 12:09:59] DB: Time anomaly: event timestamp moved backward 00:00:12", true, "Anomalía de tiempo; puede indicar manipulación de timestamps para ocultar actividad."),
+    databaseLogFactory.Create("[2025-10-27 12:10:08] DB: Detected SQL injection pattern in query: \"' OR '1'='1' --\"", true, "Patrón clásico de SQL injection detectado en la consulta; riesgo de exfiltración de datos."),
+    databaseLogFactory.Create("[2025-10-27 12:10:14] DB: File /etc/db/keys.pem opened by unknown PID 4421", true, "Acceso a clave privada por PID desconocido; posible intento de extracción de claves."),
+    databaseLogFactory.Create("[2025-10-27 12:10:21] DB: ALERT: Base64 payload in field 'notes' (length 1024)", true, "Carga Base64 inusualmente grande en campo texto; puede ser exfiltración o malware incrustado."),
+    databaseLogFactory.Create("[2025-10-27 12:10:30] DB: Warning - replication lag: master ahead by 00:02:13", false, "Lag de replicación detectado; problema de performance, no necesariamente malicioso."),
+    databaseLogFactory.Create("[2025-10-27 12:10:38] DB: LOG_INCONSISTENCY: segment #7 overlaps with #6", false, "Inconsistencia de logs detectada; probablemente por recuperación parcial, requiere análisis."),
+    databaseLogFactory.Create("[2025-10-27 12:10:45] DB: User 'service' escalated privileges unexpectedly", true, "Escalamiento de privilegios inesperado para cuenta de servicio — alto riesgo internal breach."),
+    databaseLogFactory.Create("[2025-10-27 12:10:52] DB: NTP delta detected: clock jumped +300s", false, "Salto de tiempo en NTP; puede ser ajuste de reloj, importante para correlación de eventos."),
+    databaseLogFactory.Create("[2025-10-27 12:11:00] DB: Checksum altered: expected 0xA3F2 got 0x0000", true, "Checksum alterado a valor nulo; indica posible corrupción intencional o manipulación de registros.")
         };
 
-        // Logs difíciles: ya son ciberataques o manipulación directa
-        textosDificiles1 = new databaseLogStructure[]
-        {
-            databaseLogFactory.Create("[2025-10-27 12:15:01] DB: SIG_INVALID: digital signature mismatch on archive.bin (cert: CN=db-root)", true),
-            databaseLogFactory.Create("[2025-10-27 12:15:07] DB: Log replay attack suspected: repeated sequence found (9834..9842) with different hashes", true),
-            databaseLogFactory.Create("[2025-10-27 12:15:12] DB: Hidden column 'x0r_exec' appears in table 'configs' (not in schema)", true),
-            databaseLogFactory.Create("[2025-10-27 12:15:20] DB: Process 'svc-updater' spawns only when observer disconnected", true),
-            databaseLogFactory.Create("[2025-10-27 12:15:28] DB: Encrypted blob detected in log: 'U2FsdGVkX1+Qp0...' (AES?)", true),
-            databaseLogFactory.Create("[2025-10-27 12:15:36] DB: Firmware signature mismatch on camera-feed#3 (reported ver 1.2.0 != expected 1.1.7)", true),
-            databaseLogFactory.Create("[2025-10-27 12:15:44] DB: Persistent backdoor: auth token reused across sessions (token id: tk-77C)", true),
-            databaseLogFactory.Create("[2025-10-27 12:15:52] DB: Rootkit indicator: /dev/pts/hidden_fd opened by kernel module 'kmod_x'", true),
-            databaseLogFactory.Create("[2025-10-27 12:15:58] DB: Certificate revoked but connection accepted: CN=svc-node-9", true),
-            databaseLogFactory.Create("[2025-10-27 12:16:05] DB: Replay timestamp insertion: events reordered to hide action at 12:14:33", true)
-        };
 
-        // Logs extremadamente avanzados (APT, malware encubierto, etc.)
-        textosDificiles2 = new databaseLogStructure[]
-        {
-            databaseLogFactory.Create("[2025-10-27 12:20:01] DB: APT telemetry: lateral movement signature matches IOC set 'night-owl-v2'", true),
-            databaseLogFactory.Create("[2025-10-27 12:20:09] DB: NTP poisoning chain: multiple servers report conflicting stratum", true),
-            databaseLogFactory.Create("[2025-10-27 12:20:17] DB: Covert channel detected: low-frequency timing pattern between nodes 4 & 9", true),
-            databaseLogFactory.Create("[2025-10-27 12:20:25] DB: Signed manifesto injected in logs: '/* kernel hook enabled */' (obfuscated)", true),
-            databaseLogFactory.Create("[2025-10-27 12:20:33] DB: Hardware trojan suspicion: unexpected firmware write to EEPROM", true),
-            databaseLogFactory.Create("[2025-10-27 12:20:41] DB: Private key exfiltration pattern: chunks written to 'tmp/.cache' with steganography markers", true),
-            databaseLogFactory.Create("[2025-10-27 12:20:49] DB: Time-based polymorphic payload executed at leap-second boundary", true),
-            databaseLogFactory.Create("[2025-10-27 12:20:57] DB: Command-and-Control beacon encoded inside seemingly benign telemetry", true),
-            databaseLogFactory.Create("[2025-10-27 12:21:05] DB: Multi-vector persistence: BIOS write + kernel module + scheduled task match", true),
-            databaseLogFactory.Create("[2025-10-27 12:21:13] DB: Log fabricator active: synthetic entries injected with forged HMACs", true)
-        };
+
         int choise = UnityEngine.Random.Range(0, 3);
         switch (choise)
         {

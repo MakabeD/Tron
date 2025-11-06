@@ -10,11 +10,13 @@ public class databaseLogStructure
 {
     public readonly string text;
     public readonly bool isMalicious;
+    public readonly string feedback;
 
-    public databaseLogStructure(string text, bool isMalicious)
+    public databaseLogStructure(string text, bool isMalicious, string feedback)
     {
         this.text = text;
         this.isMalicious = isMalicious;
+        this.feedback = feedback;
     }
 
 
@@ -29,9 +31,9 @@ public static class databaseLogFactory
     /// <summary>
     /// Crea una entrada simple.
     /// </summary>
-    public static databaseLogStructure Create(string text, bool isMalicious)
+    public static databaseLogStructure Create(string text, bool isMalicious, string feedback)
     {
-        return new databaseLogStructure(text, isMalicious);
+        return new databaseLogStructure(text, isMalicious, feedback);
     }
 
    

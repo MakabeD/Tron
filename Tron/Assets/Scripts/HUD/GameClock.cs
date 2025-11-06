@@ -62,6 +62,7 @@ public class GameClock : MonoBehaviour
             timer -= secondsPerGameMinute;
             AdvanceGameMinute();
         }
+        if (gameHour >= 6 && !FeedbackController.Instance.preparing) { FeedbackController.Instance.prepare(); }
     }
 
     void AdvanceGameMinute()

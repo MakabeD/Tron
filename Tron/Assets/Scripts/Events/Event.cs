@@ -26,5 +26,6 @@ public abstract class Event
     {
         Probability += amount;
     }
+    public void SetEmergency(bool value) => EventEmergency = value;
 }
 

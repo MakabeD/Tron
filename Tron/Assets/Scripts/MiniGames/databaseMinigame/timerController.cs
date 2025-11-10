@@ -16,7 +16,7 @@ public class timerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer = TestRoomController.Instance.getEmergencyTimer();
+        timer = TestRoomController.Instance.GetEmergencyTimer();
         textMeshTimer.text = string.Format(">>segundos restantes: {0:00}<<", 60-timer);
     }
 }

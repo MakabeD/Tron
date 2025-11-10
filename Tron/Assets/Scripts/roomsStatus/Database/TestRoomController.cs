@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class TestRoomController : MonoBehaviour
 {
-    int id = 0;
-    public float timer = 0;
-    bool emergency;
-    bool isSpawned;
-    public Renderer renderLampColor;
-    public static TestRoomController Instance;
+    // Singleton seguro (setter privado)
+    public static TestRoomController Instance { get; private set; }
+
+    [SerializeField] private int id = 0;
+    [SerializeField] private float timer = 0f;
+
+    
+    private bool emergency;
+    private bool isSpawned;
+
+    [SerializeField] private Renderer renderLampColor;
+
     private void Awake()
     {
         if (Instance == null)
@@ -22,51 +28,59 @@ public class TestRoomController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
 
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        isSpawned = EventManager.Instance.GetEvent(id).IsSpawned;
-        emergency = EventManager.Instance.GetEvent(id).EventEmergency;
-        if (renderLampColor != null && emergency)
+        
+        var evt = EventManager.Instance.GetEvent(id);
+        if (evt == null) return;
+
+        isSpawned = evt.IsSpawned;
+        emergency = evt.EventEmergency;
+
+        
+        if (renderLampColor != null)
         {
-            renderLampColor.material.color = Color.red; // crea/usa una instancia sólo para ese renderer
+            if (emergency)
+            {
+                renderLampColor.material.color = Color.red;
+            }
+            else if (isSpawned)
+            {
+                renderLampColor.material.color = Color.yellow;
+            }
+            else
+            {
+                renderLampColor.material.color = Color.white;
+            }
         }
-        else if(renderLampColor != null && isSpawned)
-        {
-            renderLampColor.material.color = Color.yellow;
-        }
-        else renderLampColor.material.color = Color.white;
+
+        
         if (isSpawned && !emergency)
         {
             timer += Time.deltaTime;
         }
         else
         {
-            timer = 0;
+            timer = 0f;
             return;
         }
 
-        if (timer >= 60 && !EventManager.Instance.GetEvent(id).EventEmergency)
+        // Al pasar 60s activamos la emergencia para este evento
+        if (timer >= 60f && !evt.EventEmergency)
         {
             GameHP.Instance.GetDownLife(10);
-            EventManager.Instance.GetEvent(id).EventEmergency = true;
+
+            evt.SetEmergency(true);
+
             GameManager.Instance.isinCombat++;
 
             EventManager.Instance.IncrementEmergencyEventCount();
             Debug.Log("emergencia por tiempo(database)");
         }
-        
     }
-    public float getEmergencyTimer()
-    {
-        if (!emergency) return timer;
-        return 60;
-    }
+
+    
+    public float GetEmergencyTimer() => !emergency ? timer : 60f;
+    public void IncreaseEmergencyTimer(int i) => timer += i;
 }

@@ -1,16 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class MinigameManager : MonoBehaviour
 {
-    public static MinigameManager Instance;
+    // Singleton seguro (setter privado)
+    public static MinigameManager Instance { get; private set; }
 
-    public Transform uiRoot; // asigna el Canvas root donde instanciar (p. ej. un GameObject vacío dentro del Canvas)
-    public GameObject currentMinigameGO { get; private set; }
-    public IMinigame currentMinigame { get; private set; }
+    [SerializeField] private Transform uiRoot;
+    public Transform UIRoot => uiRoot;
+    
+    public GameObject CurrentMinigameGO { get; private set; }
+    public IMinigame CurrentMinigame { get; private set; }
 
     public event Action OnMinigameStarted;
     public event Action OnMinigameEnded;
@@ -28,11 +28,10 @@ public class MinigameManager : MonoBehaviour
 
         GameManager.Instance.isInGame = true;
         // instanciar UI
-        currentMinigameGO = Instantiate(minigamePrefab, uiRoot, worldPositionStays: false);
-        currentMinigame = currentMinigameGO.GetComponent<IMinigame>();
-        currentMinigame?.StartMinigame();
+        CurrentMinigameGO = Instantiate(minigamePrefab, uiRoot, worldPositionStays: false);
+        CurrentMinigame = CurrentMinigameGO.GetComponent<IMinigame>();
+        CurrentMinigame?.StartMinigame();
 
-        
         Cursor.lockState = CursorLockMode.None;
 
         OnMinigameStarted?.Invoke();
@@ -43,31 +42,16 @@ public class MinigameManager : MonoBehaviour
     {
         if (!GameManager.Instance.isInGame) return;
 
-        
+        CurrentMinigame?.EndMinigame();
 
-        currentMinigame?.EndMinigame();
-
-        if (currentMinigameGO != null) Destroy(currentMinigameGO);
-        currentMinigameGO = null;
-        currentMinigame = null;
+        if (CurrentMinigameGO != null) Destroy(CurrentMinigameGO);
+        CurrentMinigameGO = null;
+        CurrentMinigame = null;
 
         GameManager.Instance.isInGame = false;
 
-        
         Cursor.lockState = CursorLockMode.Locked;
 
         OnMinigameEnded?.Invoke();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

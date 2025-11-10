@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class FirewallRoomController : MonoBehaviour
 {
-    int id = 1;
-    public float timer = 0;
-    bool emergency;
-    bool isSpawned;
-    public Renderer renderLampColor;
-    public static FirewallRoomController Instance;
+    // Singleton seguro
+    public static FirewallRoomController Instance { get; private set; }
+
+    [SerializeField] private int id = 1;
+    [SerializeField] private float timer = 0f;
+
+    [SerializeField] private Renderer renderLampColor;
+
+    // Umbral configurable (puedes exponerlo si quieres tunear desde Inspector)
+    private const float EmergencyThreshold = 50f;
+
     private void Awake()
     {
         if (Instance == null)
@@ -22,66 +27,59 @@ public class FirewallRoomController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
 
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        // 1) Validaciones básicas: EventManager y el evento (ev) deben existir
+        
         if (EventManager.Instance == null) return;
         var ev = EventManager.Instance.GetEvent(id);
         if (ev == null) return;
 
-        // 2) Obtener estados locales (lectura una sola vez por frame)
+        
         bool isSpawned = ev.IsSpawned;
         bool emergency = ev.EventEmergency;
 
-        // 3) Determinar color objetivo (prioridad: emergency -> spawned -> default)
+        
         Color targetColor = Color.white;
-        if (emergency)
-        {
-            targetColor = Color.red;
-        }
-        else if (isSpawned)
-        {
-            targetColor = Color.yellow;
-        }
-        // Si renderLampColor es null, no intentamos acceder al material
+        if (emergency) targetColor = Color.red;
+        else if (isSpawned) targetColor = Color.yellow;
+
         if (renderLampColor != null)
         {
             renderLampColor.material.color = targetColor;
         }
 
-        // 4) Lógica del temporizador: solo acumula si está spawned y no hay emergencia
+        
         if (isSpawned && !emergency)
         {
             timer += Time.deltaTime;
         }
         else
         {
-            // Si el objeto no está spawned o hay emergencia, reiniciamos el timer
             timer = 0f;
             return;
         }
 
-        // 5) Si el timer supera el umbral y aún no hay emergency en la fuente, activamos
-        if (timer >= 50f && !ev.EventEmergency) 
+        
+        if (timer >= EmergencyThreshold && !ev.EventEmergency)
         {
-            ev.EventEmergency = true;
+            
+            ev.SetEmergency(true);
+
             EventManager.Instance.IncrementEmergencyEventCount();
             GameManager.Instance.isinCombat++;
             Debug.Log("Emergencia");
         }
     }
 
-    public float getEmergencyTimer()
+   
+    public float GetEmergencyTimer()
     {
-        if (!emergency) return timer;
-        return 50;
+        
+        if (EventManager.Instance == null) return timer;
+        var ev = EventManager.Instance.GetEvent(id);
+        if (ev == null) return timer;
+
+        return ev.EventEmergency ? EmergencyThreshold : timer;
     }
 }

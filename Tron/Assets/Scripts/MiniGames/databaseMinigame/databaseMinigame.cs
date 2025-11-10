@@ -65,7 +65,7 @@ public class databaseMinigame : MonoBehaviour, IMinigame
             return;
         }
 
-        if(TestRoomController.Instance.getEmergencyTimer()>=50)
+        if(TestRoomController.Instance.GetEmergencyTimer()>=60)
         {
             OnLose();
             return;
@@ -80,7 +80,7 @@ public class databaseMinigame : MonoBehaviour, IMinigame
     public void beningClicked(LogData log)
     {
         FeedbackController.Instance.datas.Add(log); 
-        TestRoomController.Instance.timer += 5;
+        TestRoomController.Instance.IncreaseEmergencyTimer(5);
     }
     void AsignarTextosAleatorios(databaseLogStructure[] textos)
     {

@@ -80,7 +80,7 @@ public class FirewallMinigame : MonoBehaviour, IMinigame
     // Update is called once per frame
     void Update()
     {
-        if(FirewallRoomController.Instance.getEmergencyTimer() >= 50) OnLose();
+        if(FirewallRoomController.Instance.GetEmergencyTimer() >= 50) OnLose();
     }
     void Initialize()
     {

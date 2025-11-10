@@ -16,7 +16,7 @@ public class TimerController2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer = FirewallRoomController.Instance.getEmergencyTimer();
+        timer = FirewallRoomController.Instance.GetEmergencyTimer();
         textMeshTimer.text = string.Format(">>segundos restantes: {0:00}<<", 50 - timer);
     }
 }

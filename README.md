@@ -1,6 +1,6 @@
 # TRON – Interactive Cybersecurity Game
 
-#### Video Demo: <YOUTUBE_VIDEO_URL_HERE>
+#### Video Demo: (https://youtu.be/Zt-w4h7ho0o)
 
 #### Description:
 
@@ -76,7 +76,7 @@ Before running the project, ensure you have the following installed:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/MakabeD/Tron/tree/0e6e0d0a8b3a02e559272a63f603a6e87983bebe
+ git clone -b cs50-submission --single-branch https://github.com/MakabeD/Tron.git
 ```
 2. Open Unity Hub.
 
